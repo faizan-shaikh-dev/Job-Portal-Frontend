@@ -2,6 +2,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Nav from "./components/Nav";
+import {Toaster} from 'react-hot-toast';
 
 
 // Pages
@@ -19,6 +20,7 @@ export default function App() {
   return (
     <>
     <div className="min-h-screen bg-white text-slate-900 antialiased">
+      <Toaster position= "top-right"/>
       <Nav />
 
       <main>
