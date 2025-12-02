@@ -1,4 +1,4 @@
-// src/components/Footer.jsx
+
 import React from "react";
 import { Link } from "react-router-dom";
 
@@ -8,7 +8,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-10 grid grid-cols-1 md:grid-cols-3 gap-6">
         <div>
           <div className="flex items-center gap-3">
-            <img src="/image.png" alt="logo" className="w-20 h-auto" />
+            <img src="/logo.png" alt="logo" className="w-20 h-auto" />
             <div>
               <div className="text-sm font-semibold text-emerald-800">ApplyRemote</div>
               <div className="text-xs text-slate-500">Remote jobs worldwide</div>

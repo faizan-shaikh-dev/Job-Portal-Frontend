@@ -11,7 +11,8 @@ export default function Nav() {
         <div className="max-w-7xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3">
-            <img src="/image.png" alt="logo" className="w-24 h-auto" />
+            <img src="/logo.png" alt="logo" className="w-12 h-auto" />
+            <h1 className="text-2xl font-bold text-emerald-500">Hunt</h1>
           </Link>
 
           {/* Desktop Links */}
@@ -40,23 +41,37 @@ export default function Nav() {
             >
               Onsite
             </Link>
+
+            <Link
+              to="/saved"
+              className="text-base font-semibold text-emerald-800 hover:text-emerald-700 transition"
+            >
+              Save Jobs
+            </Link>
           </div>
 
           {/* Buttons + Mobile Toggle */}
           <div className="flex items-center gap-4">
             {/* Desktop Buttons */}
             <div className="hidden md:flex items-center gap-3">
-             <Link to='/login'><button className="text-sm text-emerald-700 hover:text-emerald-600 transition"> 
-                Login
-              </button></Link>
+              <Link to="/login">
+                <button className="text-sm text-emerald-700 hover:text-emerald-600 transition">
+                  Login
+                </button>
+              </Link>
 
-              <Link to='/signup'><button className="text-sm px-3 py-1 border-2 rounded-md border-emerald-500 text-emerald-700 hover:bg-emerald-50 transition">
-                Sign Up
-              </button></Link>
+              <Link to="/signup">
+                <button className="text-sm px-3 py-1 border-2 rounded-md border-emerald-500 text-emerald-700 hover:bg-emerald-50 transition">
+                  Sign Up
+                </button>
+              </Link>
 
-             <Link to='/post'> <button className="text-sm px-3 py-1 bg-emerald-600 text-white rounded-md shadow hover:bg-emerald-700 transition">
-                Post Job
-              </button></Link>
+              <Link to="/post">
+                {" "}
+                <button className="text-sm px-3 py-1 bg-emerald-600 text-white rounded-md shadow hover:bg-emerald-700 transition">
+                  Post Job
+                </button>
+              </Link>
             </div>
 
             {/* Mobile Menu Toggle */}
@@ -73,7 +88,7 @@ export default function Nav() {
 
       {/* Mobile Menu */}
       {open && (
-        <div className="fixed inset-0 z-40">
+        <div className="fixed inset-0 z-40 ">
           {/* Overlay */}
           <div
             className="absolute inset-0 bg-black/40"
@@ -81,7 +96,7 @@ export default function Nav() {
           />
 
           {/* Drawer */}
-          <div className="absolute top-16 left-4 right-4 bg-white rounded-lg p-6 shadow-lg">
+          <div className="absolute top-16 left-4 right-4 bg-white rounded-lg p-6 shadow-lg mx-auto">
             <Link
               className="block py-2 text-lg font-semibold text-emerald-800"
               to="/"
@@ -111,15 +126,30 @@ export default function Nav() {
               Onsite
             </Link>
 
+            <Link
+              className="block py-2 text-lg font-semibold text-emerald-800"
+              to="/saved"
+              onClick={() => setOpen(false)}
+            >
+              Saved Jobs
+            </Link>
+
             {/* Mobile Buttons */}
             <div className="mt-4 flex flex-col gap-3">
-             <Link to='/login'><button className="py-2 text-emerald-700">Login</button></Link> 
-             <Link to='/signup'><button className="py-2 border-2 rounded-md border-emerald-500 text-emerald-700 hover:bg-emerald-50 transition">
-                Sign Up
-              </button></Link> 
-             <Link to='/post'> <button className="py-2 bg-emerald-600 text-white rounded-md shadow hover:bg-emerald-700 transition">
-                Post Job
-              </button></Link>
+              <Link to="/login">
+                <button className="py-2 text-emerald-700">Login</button>
+              </Link>
+              <Link to="/signup">
+                <button className="w-full py-2 border-2 rounded-md border-emerald-500 text-emerald-700 hover:bg-emerald-50 transition">
+                  Sign Up
+                </button>
+              </Link>
+              <Link to="/post">
+                {" "}
+                <button className="w-full py-2 bg-emerald-600 text-white rounded-md shadow hover:bg-emerald-700 transition">
+                  Post Job
+                </button>
+              </Link>
             </div>
           </div>
         </div>

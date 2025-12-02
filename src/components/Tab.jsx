@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import JobCard from "./JobCard";
 
 export default function Tab() {
   const [active, setActive] = useState("Frontend");
@@ -32,6 +33,7 @@ export default function Tab() {
           here.
         </p>
       </div>
+      <JobCard />
     </div>
   );
 }

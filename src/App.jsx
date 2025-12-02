@@ -13,6 +13,7 @@ import SignUp from "./components/SignUp";
 import Login from "./components/Login";
 import PostJob from "./pages/PostJob";
 import Footer from "./components/Footer";
+import SavedJobs from "./pages/SaveJobs";
 
 export default function App() {
   return (
@@ -26,6 +27,7 @@ export default function App() {
           <Route path="/remote" element={<Remote />} />
           <Route path="/hybrid" element={<Hybrid />} />
           <Route path="/onesite" element={<Onsite />} />
+          <Route path="/saved" element={<SavedJobs/>}/>
 
           {/* Auth */}
           <Route path="/signup" element={<SignUp />} />
