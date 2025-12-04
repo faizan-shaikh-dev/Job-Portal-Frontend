@@ -1,5 +1,5 @@
 import React from "react";
-import { BsBookmark, BsBookmarkFill } from "react-icons/bs"; // bookmark icons
+import { BsBookmark,  } from "react-icons/bs"; // bookmark icons
 
 export default function JobCard() {
   return (

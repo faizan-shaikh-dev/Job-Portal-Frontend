@@ -47,8 +47,8 @@ export default function Hero() {
               Browse Remote Jobs
             </Link>
 
-            <Link to="/post-job" className="px-5 py-2 bg-emerald-600 text-white rounded-md shadow hover:bg-emerald-700 transition">
-              Post a Job
+            <Link to="/feedback" className="px-5 py-2 bg-emerald-600 text-white rounded-md shadow hover:bg-emerald-700 transition">
+              Give Feedback
             </Link>
           </div>
         </div>

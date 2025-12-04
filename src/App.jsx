@@ -1,9 +1,8 @@
 // src/App.jsx
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import Nav from "./components/Nav";
-import {Toaster} from 'react-hot-toast';
-
+import { Toaster } from "react-hot-toast";
 
 // Pages
 import Home from "./pages/Home";
@@ -15,33 +14,47 @@ import Login from "./components/Login";
 import PostJob from "./pages/PostJob";
 import Footer from "./components/Footer";
 import SavedJobs from "./pages/SaveJobs";
+import Protected from "./components/Protected";
+import FeedBack from "./pages/FeedBack";
 
 export default function App() {
+  const location = useLocation();
+  const hideNav = ["/login", "/signup"].includes(location.pathname);
+
   return (
     <>
-    <div className="min-h-screen bg-white text-slate-900 antialiased">
-      <Toaster position= "top-right"/>
-      <Nav />
+      
+      {!hideNav && <Nav />}
 
-      <main>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/remote" element={<Remote />} />
-          <Route path="/hybrid" element={<Hybrid />} />
-          <Route path="/onesite" element={<Onsite />} />
-          <Route path="/saved" element={<SavedJobs/>}/>
+      <div className="min-h-screen bg-white text-slate-900 antialiased">
+        <Toaster position="top-right" />
 
-          {/* Auth */}
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/login" element={<Login />} />
+        <main>
+          <Routes>
+            {/* Home is public — do NOT protect it */}
+            <Route path="/" element={<Protected><Home /></Protected>} />
 
-          {/* fallback */}
-          <Route path="*" element={<Home />} />
-          <Route path="/post" element={<PostJob/>}/>
-        </Routes>
-      </main>
-    </div>
-    <Footer/>
+            <Route path="/remote" element={<Remote />} />
+            <Route path="/hybrid" element={<Hybrid />} />
+            <Route path="/onesite" element={<Onsite />} />
+
+            {/* protected pages */}
+            <Route path="/saved" element={<Protected><SavedJobs /></Protected>} />
+            <Route path="/post" element={<Protected><PostJob /></Protected>} />
+
+            {/* Auth */}
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/feedback" element={<FeedBack/>}/>
+
+            {/* fallback */}
+            <Route path="*" element={<Navigate to='/' replace />} />
+          </Routes>
+        </main>
+      </div>
+
+      
+      {!hideNav && <Footer />}
     </>
   );
 }

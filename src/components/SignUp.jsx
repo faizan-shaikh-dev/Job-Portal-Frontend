@@ -26,7 +26,7 @@ export default function SignUp() {
       setLoading(true);
       await register(form); // register handled by context (caller handles errors)
       toast.success("Registered successfully — please login");
-      navigate("/login");
+      navigate("/");
     } catch (err) {
       console.error("Signup Error:", err);
       toast.error(err?.response?.data?.message || "Registration failed");
