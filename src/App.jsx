@@ -16,6 +16,7 @@ import Footer from "./components/Footer";
 import SavedJobs from "./pages/SaveJobs";
 import Protected from "./components/Protected";
 import FeedBack from "./pages/FeedBack";
+import AdminProtected from "./components/adminProtected";
 
 export default function App() {
   const location = useLocation();
@@ -31,23 +32,23 @@ export default function App() {
 
         <main>
           <Routes>
-            {/* Home is public — do NOT protect it */}
+           
             <Route path="/" element={<Protected><Home /></Protected>} />
 
             <Route path="/remote" element={<Remote />} />
             <Route path="/hybrid" element={<Hybrid />} />
             <Route path="/onesite" element={<Onsite />} />
 
-            {/* protected pages */}
+          
             <Route path="/saved" element={<Protected><SavedJobs /></Protected>} />
-            <Route path="/post" element={<Protected><PostJob /></Protected>} />
+            <Route path="/post" element={<AdminProtected><Protected><PostJob /></Protected></AdminProtected>} />
 
-            {/* Auth */}
+           
             <Route path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
             <Route path="/feedback" element={<FeedBack/>}/>
 
-            {/* fallback */}
+          
             <Route path="*" element={<Navigate to='/' replace />} />
           </Routes>
         </main>

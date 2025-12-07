@@ -1,6 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { loginApi, registerApi } from "../api/authServices";
-import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
 
@@ -8,86 +7,77 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
-  const navigate = useNavigate();
 
+ 
   useEffect(() => {
-    const raw = localStorage.getItem("auth");
-    if (raw) {
-      try {
+    try {
+      const raw = localStorage.getItem("auth");
+      if (raw) {
         const data = JSON.parse(raw);
         setUser(data.user || null);
         setToken(data.token || null);
-      } catch (error) {
-        localStorage.removeItem("auth");
       }
+    } catch (err) {
+      localStorage.removeItem("auth");
     }
     setLoading(false);
   }, []);
 
+  
   const saveAuth = (userObj, tokenStr) => {
-    setUser(userObj || null);
-    setToken(tokenStr || null);
-    try {
-      localStorage.setItem(
-        "auth",
-        JSON.stringify({ user: userObj, token: tokenStr })
-      );
-      console.log({ user: userObj, token: tokenStr });
-    } catch (error) {
-      console.error("Failde to save localStorage", error);
-    }
+    setUser(userObj);
+    setToken(tokenStr);
+    localStorage.setItem(
+      "auth",
+      JSON.stringify({ user: userObj, token: tokenStr })
+    );
   };
 
+ 
   const clearAuth = () => {
     setUser(null);
     setToken(null);
-    try {
-      localStorage.removeItem("auth");
-    } catch (error) {
-      console.error("Failed to clear auth");
-    }
+    localStorage.removeItem("auth");
   };
 
+
   const register = async (payload) => {
-    // caller handles errors
     return registerApi(payload);
   };
 
+ 
   const login = async (credentials) => {
     const res = await loginApi(credentials);
-    console.log("LOGIN RESPONSE:", res);
 
-    if (res?.data?.token && res?.data?.user) {
-      saveAuth(res.data.user, res.data.token);
-      return res;
+    const { user, token } = res.data;
+
+    if (!user || !token) {
+      throw new Error("Invalid login response from server");
     }
 
-    if (res?.data?.token) {
-      const possibleUser = res?.data?.user || null;
-      saveAuth(possibleUser, res.data.token);
-      return res;
-    }
-
-    if (res?.data?.user && !res?.data?.token) {
-      // maybe token in header? try to get it
-      const tokenFromHeader =
-        res?.headers?.authorization || res?.headers?.Authorization;
-      if (tokenFromHeader) {
-        const t = tokenFromHeader.replace("Bearer ", "");
-        saveAuth(res.data.user, t);
-        return res;
-      }
-
-      saveAuth(res.data.user, null);
-      return res;
-    }
+    saveAuth(user, token);
+    return res;
   };
 
+ 
+  const isAuthenticated = !!user;
+  const isAdmin = user?.role === "admin";
+
+  
   return (
     <AuthContext.Provider
-      value={{ user, token, loading, register, login, logout: clearAuth }}
+      value={{
+        user,
+        token,
+        loading,
+        isAuthenticated,
+        isAdmin,
+        login,
+        register,
+        logout: clearAuth,
+      }}
     >
-      {children}
+      {!loading && children}
     </AuthContext.Provider>
   );
 };

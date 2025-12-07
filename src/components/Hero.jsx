@@ -20,26 +20,8 @@ export default function Hero() {
             Search curated remote opportunities. Apply instantly. No complexity — just opportunities.
           </p>
 
-          {/* Search */}
-          <form className="mt-6 flex flex-col sm:flex-row gap-3 max-w-xl" onSubmit={(e) => e.preventDefault()}>
-            <input
-              placeholder="Job title or company"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              className="flex-1 px-4 py-3 border rounded-lg border-emerald-200 outline-none focus:ring-2 focus:ring-emerald-300"
-            />
-
-            <input
-              placeholder="Location"
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
-              className="w-full sm:w-64 px-4 py-3 border rounded-lg border-emerald-200 outline-none focus:ring-2 focus:ring-emerald-300"
-            />
-
-            <button className="px-6 py-3 bg-emerald-600 text-white font-semibold rounded-lg shadow hover:bg-emerald-700 transition">
-              Search
-            </button>
-          </form>
+        
+        
 
           {/* CTA */}
           <div className="mt-8 flex flex-wrap gap-4 items-center">
