@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import JobCard from "./JobCard";
-import getAllJobs from "../api/jobServices";
+import {getAllJobs} from "../api/jobServices";
 import toast from "react-hot-toast";
 
 export default function Tab() {

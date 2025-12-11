@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import JobCard from "../components/JobCard";
-import getAllJobs from "../api/jobServices";
+import {getAllJobs} from "../api/jobServices";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 

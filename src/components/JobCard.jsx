@@ -1,5 +1,6 @@
 import React from "react";
-import { BsBookmark } from "react-icons/bs";
+import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
+import { useSavedJobs } from "../context/SavedJobContext"; // adjust path if needed
 
 export default function JobCard({ job }) {
   if (!job) return null;
@@ -17,14 +18,18 @@ export default function JobCard({ job }) {
     logoText,
   } = job;
 
+  const { toggleSave, isSaved } = useSavedJobs();
+  const saved = isSaved(job);
+
   return (
     <div className="relative bg-white border border-emerald-100 rounded-2xl shadow-sm p-5 flex flex-col gap-4 hover:shadow-md transition">
       {/* Save Icon */}
       <button
+        onClick={() => toggleSave(job)}
         className="absolute top-4 right-4 text-emerald-700 hover:text-emerald-900 text-xl"
-        title="Save Job"
+        title={saved ? "Remove saved job" : "Save job"}
       >
-        <BsBookmark />
+        {saved ? <BsBookmarkFill /> : <BsBookmark />}
       </button>
 
       {/* Top Row */}
