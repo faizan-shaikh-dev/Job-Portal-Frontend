@@ -1,14 +1,16 @@
-import axiosClient from "./axiosClient"
+import axiosClient from "./axiosClient";
 
-export const getAllJobs = ()=>{
-    return axiosClient.get('/api/jobs/all')
+//Get All Jobs API
+export const getAllJobs = () => {
+  return axiosClient.get("/api/jobs/all");
 };
 
-export const postJob = (payload)=>{
-    return axiosClient.post('/api/jobs/create', payload)
+//Post New Jobs API
+export const postJob = (payload) => {
+  return axiosClient.post("/api/jobs/create", payload);
 };
 
-
-
-
-
+//Delete Jobs API
+export const deleteJobs = (id) => {
+  return axiosClient.delete(`/api/jobs/${id}`);
+};

@@ -1,8 +1,10 @@
 import React from "react";
 import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
-import { useSavedJobs } from "../context/SavedJobContext"; // adjust path if needed
+import { useSavedJobs } from "../context/SavedJobContext";
+import { useJob } from "../context/JobContext";
+import { useAuth } from "../context/authContext";
 
-export default function JobCard({ job }) {
+export default function JobCard({ job, onDeleted }) {
   if (!job) return null;
 
   const {
@@ -16,13 +18,43 @@ export default function JobCard({ job }) {
     applyUrl,
     contactEmail,
     logoText,
+    _id,
+    id,
   } = job;
 
+  const jobId = _id || id;
+
+  // Saved jobs
   const { toggleSave, isSaved } = useSavedJobs();
   const saved = isSaved(job);
 
+  // Delete jobs (admin only)
+  const { removeJob, loading } = useJob();
+
+  // Auth check — only admin sees Delete button
+  const { user } = useAuth();
+  const isAdmin = user?.role === "admin" || user?.isAdmin === true;
+
+  // Delete handler
+  const handleDelete = async () => {
+    if (!jobId) {
+      alert("Missing job ID");
+      return;
+    }
+
+    const ok = confirm("Are you sure you want to delete this job?");
+    if (!ok) return;
+
+    const res = await removeJob(jobId);
+    if (res) {
+      // remove from UI immediately if parent passed callback
+      onDeleted?.(jobId);
+    }
+  };
+
   return (
     <div className="relative bg-white border border-emerald-100 rounded-2xl shadow-sm p-5 flex flex-col gap-4 hover:shadow-md transition">
+      
       {/* Save Icon */}
       <button
         onClick={() => toggleSave(job)}
@@ -35,7 +67,7 @@ export default function JobCard({ job }) {
       {/* Top Row */}
       <div className="flex items-start gap-4">
         <div className="w-14 h-14 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-700 font-bold text-xl">
-          {logoText || (company && company[0]) || "C"}
+          {logoText || company?.[0] || "C"}
         </div>
 
         <div className="flex-1">
@@ -78,8 +110,9 @@ export default function JobCard({ job }) {
         <p className="text-sm text-slate-700 leading-relaxed">{description}</p>
       )}
 
-      {/* Apply */}
+      {/* Apply + Admin Delete */}
       <div className="mt-3 flex items-center gap-4">
+        {/* Apply Button */}
         {applyUrl ? (
           <a
             href={applyUrl}
@@ -95,10 +128,22 @@ export default function JobCard({ job }) {
           </button>
         )}
 
+        {/* Contact Email */}
         {contactEmail && (
           <a href={`mailto:${contactEmail}`} className="text-sm text-emerald-700 hover:underline">
             {contactEmail}
           </a>
+        )}
+
+        {/* ADMIN DELETE BUTTON */}
+        {isAdmin && (
+          <button
+            onClick={handleDelete}
+            disabled={loading}
+            className="ml-auto px-3 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition"
+          >
+            {loading ? "Deleting..." : "Delete"}
+          </button>
         )}
       </div>
     </div>
