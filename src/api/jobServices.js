@@ -14,3 +14,5 @@ export const postJob = (payload) => {
 export const deleteJobs = (id) => {
   return axiosClient.delete(`/api/jobs/${id}`);
 };
+
+

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useJob } from "../context/jobContext";
+import { useJob } from "../context/JobContext";
 export default function PostJob() {
   const { createJob, loading } = useJob();
 

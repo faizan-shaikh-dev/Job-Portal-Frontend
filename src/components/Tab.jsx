@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import JobCard from "./JobCard";
-import {getAllJobs} from "../api/jobServices";
+import { getAllJobs } from "../api/jobServices";
 import toast from "react-hot-toast";
 
 export default function Tab() {
@@ -14,11 +14,10 @@ export default function Tab() {
   }, []);
 
   const fetchJobs = async () => {
+    setLoading(true);
     try {
       const res = await getAllJobs();
-      setJobs(res.data || []);
-      console.log(res.data);
-      
+      setJobs(res?.data || []);
     } catch (err) {
       console.error("fetchJobs error:", err);
       toast.error("Failed to load jobs");
@@ -26,6 +25,12 @@ export default function Tab() {
     } finally {
       setLoading(false);
     }
+  };
+
+  // Called by JobCard after successful delete to remove item locally
+  const handleDeleted = (deletedId) => {
+    if (!deletedId) return;
+    setJobs((prev) => prev.filter((j) => (j._id ?? j.id) !== deletedId));
   };
 
   useEffect(() => {
@@ -99,7 +104,11 @@ export default function Tab() {
         ) : (
           <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {filtered.map((job) => (
-              <JobCard key={job._id || job.id} job={job} />
+              <JobCard
+                key={job._id || job.id}
+                job={job}
+                onDeleted={handleDeleted} // <-- pass handler for instant removal
+              />
             ))}
           </div>
         )}

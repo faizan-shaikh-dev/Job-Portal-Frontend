@@ -4,8 +4,9 @@ import "./index.css";
 import App from "./App.jsx";
 import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./context/authContext.jsx";
-import { JobProvider } from "./context/jobContext.jsx";
+import { JobProvider } from "./context/JobContext.jsx";
 import { SavedJobProvider } from "./context/SavedJobContext.jsx";
+import { FeedbackProvider } from "./context/FeedbackContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -13,7 +14,9 @@ createRoot(document.getElementById("root")).render(
       <AuthProvider>
         <JobProvider>
           <SavedJobProvider>
-            <App />
+            <FeedbackProvider>
+              <App />
+            </FeedbackProvider>
           </SavedJobProvider>
         </JobProvider>
       </AuthProvider>
