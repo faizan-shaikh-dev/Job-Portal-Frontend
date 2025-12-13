@@ -1,58 +1,83 @@
-// src/components/Testimonials.jsx
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useFeedback } from "../context/FeedbackContext";
 
 export default function Testimonials() {
+  const { feedbackList, loading, loadFeedback } = useFeedback();
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    loadFeedback();
+  }, []);
+
+  if (loading) {
+    return <p className="text-center py-10">Loading feedback...</p>;
+  }
+
+  if (feedbackList.length === 0) {
+    return <p className="text-center py-10">No feedback yet</p>;
+  }
+
+  const prev = () => {
+    setIndex((i) =>
+      i === 0 ? Math.max(feedbackList.length - 3, 0) : i - 1
+    );
+  };
+
+  const next = () => {
+    setIndex((i) =>
+      i + 3 >= feedbackList.length ? 0 : i + 1
+    );
+  };
+
+  const visibleFeedback = feedbackList.slice(index, index + 3);
+
   return (
     <section className="bg-[linear-gradient(to_bottom,#f7fffb,#ffffff)] py-12">
-      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
-        <h3 className="text-2xl font-extrabold text-emerald-800 text-center">What people say</h3>
-        <p className="text-sm text-slate-600 text-center mt-2 max-w-2xl mx-auto">
-          Real feedback from candidates who found jobs through ApplyRemote.
+      <div className="max-w-7xl mx-auto px-4">
+        <h3 className="text-2xl font-extrabold text-emerald-800 text-center">
+          What People Say
+        </h3>
+        <p className="text-sm text-slate-600 text-center mt-2">
+          Real Feedback from real users
         </p>
 
-        <div className="mt-8 grid gap-6 grid-cols-1 md:grid-cols-3">
-          {/* Testimonial 1 */}
-          <div className="bg-white rounded-xl p-6 shadow border border-emerald-50">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-emerald-50 grid place-items-center text-emerald-700 font-bold">AS</div>
-              <div>
-                <div className="font-semibold text-emerald-700">Anita S.</div>
-                <div className="text-xs text-slate-500">Frontend engineer</div>
+        {/* Cards */}
+        <div className="mt-10 grid gap-6 grid-cols-1 md:grid-cols-3">
+          {visibleFeedback.map((feedback) => (
+            <div
+              key={feedback._id}
+              className="bg-white p-6 rounded-xl shadow border"
+            >
+              <div className="font-semibold text-emerald-700">
+                {feedback.name}
               </div>
-            </div>
-            <p className="mt-4 text-slate-600 text-sm">
-              Found a remote role in two weeks. The application flow was clear and the company was genuine.
-            </p>
-          </div>
-
-          {/* Testimonial 2 */}
-          <div className="bg-white rounded-xl p-6 shadow border border-emerald-50">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-emerald-50 grid place-items-center text-emerald-700 font-bold">RK</div>
-              <div>
-                <div className="font-semibold text-emerald-700">Rahul K.</div>
-                <div className="text-xs text-slate-500">Backend engineer</div>
+              <div className="text-xs text-slate-500">
+                {feedback.role || "User"}
               </div>
+              <p className="mt-4 text-slate-600">
+                “{feedback.message}”
+              </p>
             </div>
-            <p className="mt-4 text-slate-600 text-sm">
-              Jobs were high quality and communication with employers was professional. Recommended.
-            </p>
-          </div>
-
-          {/* Testimonial 3 */}
-          <div className="bg-white rounded-xl p-6 shadow border border-emerald-50">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-emerald-50 grid place-items-center text-emerald-700 font-bold">LP</div>
-              <div>
-                <div className="font-semibold text-emerald-700">Lisa P.</div>
-                <div className="text-xs text-slate-500">Product Designer</div>
-              </div>
-            </div>
-            <p className="mt-4 text-slate-600 text-sm">
-              The platform is simple and the selection process saved me time — great for designers.
-            </p>
-          </div>
+          ))}
         </div>
+
+        {/* Controls */}
+        {feedbackList.length > 3 && (
+          <div className="mt-8 flex justify-center gap-4">
+            <button
+              onClick={prev}
+              className="px-4 py-2 border rounded"
+            >
+              Prev
+            </button>
+            <button
+              onClick={next}
+              className="px-4 py-2 border rounded"
+            >
+              Next
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );

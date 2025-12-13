@@ -14,6 +14,8 @@ export const FeedbackProvider = ({ children }) => {
       const res = await sendFeedback(payload);
       toast.success("Feedback send successfully");
       return res.data;
+     
+      
     } catch (error) {
       console.error(error);
       toast.error("Failed to submit feedback");

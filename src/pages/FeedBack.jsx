@@ -1,77 +1,44 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useFeedback } from "../context/FeedbackContext";
 
-const FeedBack = () => {
-  const [form, setForm] = useState({
-    name: "",
-    role: "",
-    message: "",
-  });
+export default function Testimonials() {
+  const { feedbackList, loadFeedback, loading } = useFeedback();
+  const [index, setIndex] = useState(0);
 
-  const change = (e) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
-  };
+  useEffect(() => {
+    loadFeedback();
+  }, []);
+
+  if (loading) return <p className="text-center">Loading...</p>;
+  if (!feedbackList.length) return null;
+
+  const feedback = feedbackList[index];
 
   return (
-    <div className="min-h-screen pt-28 pb-10 bg-white">
-      <div className="max-w-xl mx-auto px-4 bg-white p-6 rounded-xl shadow border">
-        <h2 className="text-2xl font-semibold text-emerald-700 mb-2">
-          Feedback Form
-        </h2>
+    <section className="py-12">
+      <div className="max-w-xl mx-auto text-center">
 
-        <h2 className="text-sm text-slate-500 mb-6">
-          Tell us about your experience
-        </h2>
+        <div className="bg-white p-6 rounded-xl shadow">
+          <div className="font-semibold">{feedback.name}</div>
+          <div className="text-xs text-gray-500">{feedback.role}</div>
+          <p className="mt-3">{feedback.message}</p>
+        </div>
 
-        <form className="space-y-5">
-          <div>
-            <label className="text-sm font-medium text-slate-700">
-              Full Name
-            </label>
-            <input
-              type="text"
-              name="name"
-              value={form.name}
-              onChange={change}
-              placeholder="Enter Your Name"
-              className="w-full mt-2 px-4 py-2 border rounded-md outline-0 focus:ring-2 focus:ring-emerald-300"
-            />
-          </div>
+        <div className="flex justify-center gap-4 mt-4">
+          <button onClick={() =>
+            setIndex(i => i === 0 ? feedbackList.length - 1 : i - 1)
+          }>
+            Prev
+          </button>
 
-          <div>
-            <label className="text-sm font-medium text-slate-700">
-              Job Role
-            </label>
-            <input
-              type="text"
-              name="role"
-              value={form.role}
-              onChange={change}
-              placeholder="Your Job Domain"
-              className="w-full mt-2 px-4 py-2 border rounded-md outline-0 focus:ring-2 focus:ring-emerald-300"
-            />
-          </div>
+          <button onClick={() =>
+            setIndex(i => i === feedbackList.length - 1 ? 0 : i + 1)
+          }>
+            Next
+          </button>
+        </div>
 
-          <div>
-            <label className="text-sm font-medium text-slate-700">
-              Your Feedback
-            </label>
-            <textarea
-              type="text"
-              name="message"
-              value={form.message}
-              rows={6}
-              onChange={change}
-              placeholder="write your feedback"
-              className="w-full mt-2 px-4 py-2 border rounded-md outline-0 focus:ring-2 focus:ring-emerald-300"
-            />
-          </div>
-
-          <button type="submit" className="w-full py-3 bg-emerald-600 text-white rounded-md shadow hover:bg-emerald-700 transition">Submit Feedback</button>
-        </form>
       </div>
-    </div>
+    </section>
   );
-};
-
-export default FeedBack;
+}
